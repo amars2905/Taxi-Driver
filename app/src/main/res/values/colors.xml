@@ -85,6 +85,10 @@
     <color name="yellow_A200">#FFFF00</color>
     <color name="yellow_A400">#FFEA00</color>
     <color name="yellow_A700">#FFD600</color>
+    <color name="blue_light">#6732C5</color>
+    <color name="blue">#2476B6</color>
+    <color name="acent_pink">#C62828</color>
+    <color name="green">#2CA003</color>
 
     <color name="deep_orange_50">#FBE9E7</color>
     <color name="deep_orange_100">#FFCCBC</color>
