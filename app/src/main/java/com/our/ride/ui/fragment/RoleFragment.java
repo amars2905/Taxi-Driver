@@ -12,13 +12,13 @@ import com.our.ride.utils.BaseFragment;
 
 import static com.our.ride.ui.MainHomeActivity.tvEditProfile;
 
-public class BookingFragment extends BaseFragment {
+public class RoleFragment extends BaseFragment {
     private View rootView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_booking, container, false);
+        rootView = inflater.inflate(R.layout.fragment_role, container, false);
         tvEditProfile.setVisibility(View.GONE);
         return rootView;
     }

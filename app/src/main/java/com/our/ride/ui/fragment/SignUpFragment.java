@@ -9,10 +9,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -89,6 +91,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 .replace(R.id.login_frame, fragment, tag).commit();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -98,31 +101,19 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             case R.id.ivBack:
                 startFragment(Constant.SignIn, new LoginFragment());
                 break;
-            case R.id.ivInsurance:
-                try {
-                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, LOAD_IMAGE_GALLERY);
-                    } else {
-                        selectImage1();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
             case R.id.ivDrivingLIcence:
-                try {
-                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, LOAD_IMAGE_GALLERY);
-                    } else {
-                        selectImage();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                getDriverLicenceImage();
+                break;
+            case R.id.ivInsurance:
+                getInsuranceImage();
+                break;
+            case R.id.ivLicencePlate:
+                getLicencePlateImage();
+                break;
+            case R.id.ivVehiclePicture:
+                getVehicleImage();
+            case R.id.ivVehiclePicture2:
+                getVehicle2Image();
                 break;
         }
     }
@@ -255,68 +246,72 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == PICK_IMAGE_CAMERA) {
-                try {
-                    Bitmap photo = (Bitmap) data.getExtras().get("data");
-                    ivDrivingLIcence.setImageBitmap(photo);
-                    Uri tempUri = getImageUri(mContext, photo);
-                    finalFile = new File(getRealPathFromURI(tempUri));
-
-                    //api hit
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (requestCode == LOAD_IMAGE_GALLERY && resultCode == RESULT_OK && null != data) {
-                final Uri uriImage = data.getData();
-                final InputStream inputStream;
-                try {
-                    inputStream = mContext.getContentResolver().openInputStream(uriImage);
-                    final Bitmap imageMap = BitmapFactory.decodeStream(inputStream);
-                    ivDrivingLIcence.setImageBitmap(imageMap);
-
-                    String imagePath2 = getPath(uriImage);
-                    File imageFile = new File(imagePath2);
-
-
-                    //api hit
-                } catch (FileNotFoundException e) {
-                    Toast.makeText(mContext, "Image not found", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-            } else if (requestCode == PICK_IMAGE_CAMERA1) {
-                    try {
-                        Bitmap photo = (Bitmap) data.getExtras().get("data");
-                        ivInsurance.setImageBitmap(photo);
-                        Uri tempUri = getImageUri(mContext, photo);
-                        finalFile = new File(getRealPathFromURI(tempUri));
-
-                        //api hit
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (requestCode == LOAD_IMAGE_GALLERY1 && resultCode == RESULT_OK && null != data) {
-                    final Uri uriImage = data.getData();
-                    final InputStream inputStream;
-                    try {
-                        inputStream = mContext.getContentResolver().openInputStream(uriImage);
-                        final Bitmap imageMap = BitmapFactory.decodeStream(inputStream);
-                        ivInsurance.setImageBitmap(imageMap);
-
-                        String imagePath2 = getPath(uriImage);
-                        File imageFile = new File(imagePath2);
-
-
-                        //api hit
-                    } catch (FileNotFoundException e) {
-                        Toast.makeText(mContext, "Image not found", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    }
-                }
-                else {
-
+        if (requestCode == RESULT_OK) {
+            switch (requestCode) {
             }
+
+        }
+        if (requestCode == PICK_IMAGE_CAMERA) {
+            try {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                ivDrivingLIcence.setImageBitmap(photo);
+                Uri tempUri = getImageUri(mContext, photo);
+                finalFile = new File(getRealPathFromURI(tempUri));
+
+                //api hit
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (requestCode == LOAD_IMAGE_GALLERY && resultCode == RESULT_OK && null != data) {
+            final Uri uriImage = data.getData();
+            final InputStream inputStream;
+            try {
+                inputStream = mContext.getContentResolver().openInputStream(uriImage);
+                final Bitmap imageMap = BitmapFactory.decodeStream(inputStream);
+                ivDrivingLIcence.setImageBitmap(imageMap);
+
+                String imagePath2 = getPath(uriImage);
+                File imageFile = new File(imagePath2);
+
+
+                //api hit
+            } catch (FileNotFoundException e) {
+                Toast.makeText(mContext, "Image not found", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else if (requestCode == PICK_IMAGE_CAMERA1) {
+            try {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                ivInsurance.setImageBitmap(photo);
+                Uri tempUri = getImageUri(mContext, photo);
+                finalFile = new File(getRealPathFromURI(tempUri));
+
+                //api hit
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (requestCode == LOAD_IMAGE_GALLERY1 && resultCode == RESULT_OK && null != data) {
+            final Uri uriImage = data.getData();
+            final InputStream inputStream;
+            try {
+                inputStream = mContext.getContentResolver().openInputStream(uriImage);
+                final Bitmap imageMap = BitmapFactory.decodeStream(inputStream);
+                ivInsurance.setImageBitmap(imageMap);
+
+                String imagePath2 = getPath(uriImage);
+                File imageFile = new File(imagePath2);
+
+
+                //api hit
+            } catch (FileNotFoundException e) {
+                Toast.makeText(mContext, "Image not found", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+
+        }
     }
 
     public String getPath(Uri uri) {
@@ -327,5 +322,94 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         String strPath = cursor.getString(column_index);
         cursor.close();
         return strPath;
+    }
+
+    private void getInsuranceImage() {
+        try {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE}, LOAD_IMAGE_GALLERY);
+            } else {
+                selectImage1();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void getDriverLicenceImage() {
+        try {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE}, LOAD_IMAGE_GALLERY);
+            } else {
+                selectImage1();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void getLicencePlateImage() {
+        try {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE}, LOAD_IMAGE_GALLERY);
+            } else {
+                selectImage1();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void getVehicleImage() {
+        try {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE}, LOAD_IMAGE_GALLERY);
+            } else {
+                selectImage1();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void getVehicle2Image() {
+        try {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE}, LOAD_IMAGE_GALLERY);
+            } else {
+                selectImage1();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void getPlateImage() {
+        try {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE}, LOAD_IMAGE_GALLERY);
+            } else {
+                selectImage1();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

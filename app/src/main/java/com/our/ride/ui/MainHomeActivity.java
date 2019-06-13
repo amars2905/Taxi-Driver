@@ -16,15 +16,18 @@ import android.widget.TextView;
 import com.our.ride.R;
 import com.our.ride.constant.Constant;
 import com.our.ride.ui.activity.EditProfileActivity;
-import com.our.ride.ui.fragment.BookingFragment;
+import com.our.ride.ui.activity.LoginActivity;
 import com.our.ride.ui.fragment.DashboardFragment;
+import com.our.ride.ui.fragment.EarningsFragment;
 import com.our.ride.ui.fragment.HistoryFragment;
 import com.our.ride.ui.fragment.ProfileFragment;
+import com.our.ride.ui.fragment.RoleFragment;
+import com.our.ride.ui.fragment.UpcomingReservationFragment;
 import com.our.ride.utils.BaseActivity;
 import com.our.ride.utils.FragmentUtils;
 
 public class MainHomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements View.OnClickListener {
     public static FragmentManager fragmentManager;
     public static FragmentUtils fragmentUtils;
     public static TextView tvEditProfile;
@@ -46,12 +49,18 @@ public class MainHomeActivity extends BaseActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        ((TextView) findViewById(R.id.icResumerideRequests)).setOnClickListener(this);
+        ((TextView) findViewById(R.id.icEarnings)).setOnClickListener(this);
+        ((TextView) findViewById(R.id.icHistory)).setOnClickListener(this);
+        ((TextView) findViewById(R.id.icLogout)).setOnClickListener(this);
+        ((TextView) findViewById(R.id.icProfile)).setOnClickListener(this);
+        ((TextView) findViewById(R.id.icRole)).setOnClickListener(this);
+        ((TextView) findViewById(R.id.icUpcomingReservation)).setOnClickListener(this);
+        ((TextView) findViewById(R.id.icWingmanSetting)).setOnClickListener(this);
 
         fragmentManager = getSupportFragmentManager();
         fragmentUtils = new FragmentUtils(fragmentManager);
-        toolbar.setTitle("Home");
+        toolbar.setTitle("Resume ride requests");
         fragmentUtils.replaceFragment(new DashboardFragment(), Constant.DashboardFragment, R.id.main_frame);
     }
 
@@ -71,42 +80,53 @@ public class MainHomeActivity extends BaseActivity
         return true;
     }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.icDashBoard) {
-            toolbar.setTitle(Constant.DashboardFragment);
-            fragmentUtils.replaceFragment(new DashboardFragment(), Constant.DashboardFragment, R.id.main_frame);
-        } else if (id == R.id.icProfile) {
-            toolbar.setTitle(Constant.ProfileFragment);
-            fragmentUtils.replaceFragment(new ProfileFragment(), Constant.ProfileFragment, R.id.main_frame);
-        } else if (id == R.id.icMyBookings) {
-            toolbar.setTitle(Constant.BookingFragment);
-            fragmentUtils.replaceFragment(new BookingFragment(), Constant.BookingFragment, R.id.main_frame);
-        } else if (id == R.id.icHistory) {
-            toolbar.setTitle(Constant.HistoryFragment);
-            fragmentUtils.replaceFragment(new HistoryFragment(), Constant.HistoryFragment, R.id.main_frame);
-        } else if (id == R.id.icShare) {
-            toolbar.setTitle("Home");
-            fragmentUtils.replaceFragment(new DashboardFragment(), Constant.DashboardFragment, R.id.main_frame);
-        } else if (id == R.id.icLogout) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.icResumerideRequests:
+                toolbar.setTitle("Resume ride requests");
+                fragmentUtils.replaceFragment(new DashboardFragment(), Constant.DashboardFragment, R.id.main_frame);
+                onBackPressed();
+                break;
+            case R.id.icProfile:
+                toolbar.setTitle(Constant.ProfileFragment);
+                fragmentUtils.replaceFragment(new ProfileFragment(), Constant.ProfileFragment, R.id.main_frame);
+                onBackPressed();
+                onBackPressed();
+                break;
+            case R.id.icRole:
+                toolbar.setTitle(Constant.RoleFragment);
+                fragmentUtils.replaceFragment(new RoleFragment(), Constant.RoleFragment, R.id.main_frame);
+                onBackPressed();
+                break;
+            case R.id.icHistory:
+                toolbar.setTitle(Constant.HistoryFragment);
+                fragmentUtils.replaceFragment(new HistoryFragment(), Constant.HistoryFragment, R.id.main_frame);
+                onBackPressed();
+                break;
+            case R.id.icUpcomingReservation:
+                toolbar.setTitle("Upcoming Reservations");
+                fragmentUtils.replaceFragment(new UpcomingReservationFragment(), Constant.DashboardFragment, R.id.main_frame);
+                onBackPressed();
+            case R.id.icWingmanSetting:
+                toolbar.setTitle("WingMan Setting");
+                fragmentUtils.replaceFragment(new DashboardFragment(), Constant.DashboardFragment, R.id.main_frame);
+                onBackPressed();
+                break;
+            case R.id.icEarnings:
+                toolbar.setTitle("Earnings");
+                fragmentUtils.replaceFragment(new EarningsFragment(), Constant.DashboardFragment, R.id.main_frame);
+                onBackPressed();
+                break;
+            case R.id.icLogout:
+                startActivity(new Intent(mContext, LoginActivity.class));
+                break;
             case R.id.tvEditProfile:
                 startActivity(new Intent(mContext, EditProfileActivity.class));
                 break;
 
         }
+
     }
 }

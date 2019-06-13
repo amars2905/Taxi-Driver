@@ -9,4 +9,5 @@ public class Constant {
     public static final String BookingFragment = "My Bookings";
     public static final String HistoryFragment = "History";
     public static final String SignIn = "Sign in";
+    public static final String RoleFragment = "RoleFragment";
 }

@@ -5,23 +5,31 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/icDashBoard"
-            android:title="Dashboard" />
+            android:id="@+id/icResumerideRequests"
+            android:title="Resume ride requests" />
+
         <item
-            android:id="@+id/icProfile"
-            android:title="Profile" />
+            android:id="@+id/icRole"
+            android:title="Role" />
         <item
-            android:id="@+id/icMyBookings"
-            android:title="My Bookings" />
+            android:id="@+id/icUpcomingReservation"
+            android:title="Upcoming Reservations" />
         <item
             android:id="@+id/icHistory"
             android:title="History" />
         <item
-            android:id="@+id/icShare"
-            android:title="Share" />
+            android:id="@+id/icProfile"
+            android:title="Profile" />
+        <item
+            android:id="@+id/icWingmanSetting"
+            android:title="Wingman Setting" />
+        <item
+            android:id="@+id/icEarnings"
+            android:title="Earnings" />
         <item
             android:id="@+id/icLogout"
             android:title="Logout" />
+
     </group>
 
 </menu>
